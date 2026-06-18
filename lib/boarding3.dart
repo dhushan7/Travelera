@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart';
 
 class OnboardingThreeScreen extends StatelessWidget {
   const OnboardingThreeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Fetch screen dimensions dynamically for perfect scaling
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    // Responsive sizing definitions
-    final double logoSize = screenWidth * 0.35; // Slightly smaller to give the grid room
-    final double cardHeight = screenHeight * 0.38; // Height for the destination container layout
+    // Responsive sizes
+    final double logoSize = screenWidth * 0.35;
+    final double cardHeight = screenHeight * 0.38;
     final double descFontSize = screenHeight * 0.022;
     final double buttonHeight = screenHeight * 0.065;
     final double buttonWidth = screenWidth * 0.6;
@@ -27,19 +27,18 @@ class OnboardingThreeScreen extends StatelessWidget {
             ),
           ),
 
-          // 3. Foreground Responsive Content
+          // Foreground Content
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
               child: Column(
-                // Changed from spaceBetween to start to control vertical positioning from the top
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 1. Precise Top Margin (40px equivalent)
+                  //  Top Margin (40px equivalent)
                   const SizedBox(height: 100),
 
-                  // 2. Logo Group (Now sitting firmly at the top)
+                  // Logo
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,18 +59,24 @@ class OnboardingThreeScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // 3. Dynamic Spacer to push the rest of the content down
-                  // This acts like a spring, pushing the text and button to the bottom area
+                  // Dynamic Spacer
                   const Spacer(),
 
-                  // 5. Bottom Next Button
+                  // Start Button
                   Padding(
                     padding: const EdgeInsets.only(bottom: 200.0),
                     child: SizedBox(
                       width: buttonWidth,
                       height: buttonHeight,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF0082CD),
                           shape: RoundedRectangleBorder(
@@ -94,7 +99,7 @@ class OnboardingThreeScreen extends StatelessWidget {
     );
   }
 
-  // Helper builder widget to create uniform individual destination grid cells quickly
+  // Helper builder widget
   Widget _buildGridItem(String title, String assetPath) {
     return Container(
       decoration: BoxDecoration(
@@ -103,12 +108,12 @@ class OnboardingThreeScreen extends StatelessWidget {
           image: AssetImage(assetPath),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.15), // Dim image slightly to make text pop clearly
+            Colors.black.withOpacity(0.15), // Dim image slightly
             BlendMode.darken,
           ),
         ),
       ),
-      alignment: Alignment.centerLeft, // Align category names cleanly over images
+      alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 12.0),
       child: Text(
         title,

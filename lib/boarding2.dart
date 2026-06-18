@@ -6,20 +6,20 @@ class OnboardingTwoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Fetch screen dimensions dynamically for perfect scaling
+    // dynamic screen dimensions
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    // Responsive sizing definitions
-    final double logoSize = screenWidth * 0.35; // Slightly smaller to give the grid room
-    final double cardHeight = screenHeight * 0.38; // Height for the destination container layout
+    // Responsive sizing
+    final double logoSize = screenWidth * 0.35;
+    final double cardHeight = screenHeight * 0.38;
     final double descFontSize = screenHeight * 0.022;
     final double buttonHeight = screenHeight * 0.065;
 
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Same Background Image as Onboarding 1
+          //  Background
           Positioned.fill(
             child: Image.asset(
               'assets/images/onboarding-bg2.png',
@@ -27,19 +27,18 @@ class OnboardingTwoScreen extends StatelessWidget {
             ),
           ),
 
-          // 3. Foreground Responsive Content
+          // Foreground Content
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
               child: Column(
-                // Changed from spaceBetween to start to control vertical positioning from the top
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 1. Precise Top Margin (40px equivalent)
+                  // Top Margin (40px equivalent)
                   const SizedBox(height: 40),
 
-                  // 2. Logo Group (Now sitting firmly at the top)
+                  // Logo
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,16 +59,11 @@ class OnboardingTwoScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // 3. Dynamic Spacer to push the rest of the content down
+                  // Dynamic Spacer to push the rest of the content down
                   // This acts like a spring, pushing the text and button to the bottom area
                   const Spacer(),
 
-                  // 4. Middle Content Panel (Grid or Description)
-                  // (Insert your GridView container or onboarding text here)
-
-                  const Spacer(), // Another flexible spacer to separate middle content from the button
-
-                  // 5. Bottom Next Button
+                  // Next Button
                   Padding(
                     padding: EdgeInsets.only(bottom: screenHeight * 0.03),
                     child: SizedBox(
@@ -80,7 +74,7 @@ class OnboardingTwoScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const OnboardingThreeScreen(), // Replace with your actual class name in boarding1.dart
+                              builder: (context) => const OnboardingThreeScreen(),
                             ),
                           );
                         },
@@ -120,7 +114,7 @@ class OnboardingTwoScreen extends StatelessWidget {
           ),
         ),
       ),
-      alignment: Alignment.centerLeft, // Align category names cleanly over images
+      alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 12.0),
       child: Text(
         title,

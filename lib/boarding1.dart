@@ -6,7 +6,7 @@ class OnboardingOneScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Fetch screen dimensions dynamically for perfect scaling
+    // dynamic screen dimensions
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -18,15 +18,15 @@ class OnboardingOneScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Background Image
+          // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/onboarding-bg1.png', // Update with your new background filename
+              'assets/images/onboarding-bg1.png',
               fit: BoxFit.cover,
             ),
           ),
 
-          // 2. Foreground Content
+          // Foreground Content
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08), // Generous side margins
@@ -37,7 +37,7 @@ class OnboardingOneScreen extends StatelessWidget {
                   // Top Spacer
                   SizedBox(height: screenHeight * 0.02),
 
-                  // Center Logo Group
+                  // Center Logo
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -57,7 +57,7 @@ class OnboardingOneScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // Middle Description Text
+                  // Description Text
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                     child: Text(
@@ -65,10 +65,10 @@ class OnboardingOneScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: descFontSize,
-                        fontWeight: FontWeight.w700, // Bold emphasis matching the design
+                        fontWeight: FontWeight.w700, // Bold text
                         fontStyle: FontStyle.italic,
                         color: Colors.black87,
-                        height: 1.4, // Increases line-spacing for better readability
+                        height: 1.4, // Increases line-spacing
                       ),
                     ),
                   ),
@@ -77,23 +77,23 @@ class OnboardingOneScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: screenHeight * 0.03),
                     child: SizedBox(
-                      width: double.infinity, // Full width button relative to padding
+                      width: double.infinity, // Full width button
                       height: buttonHeight,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const OnboardingTwoScreen(), // Replace with your actual class name in boarding1.dart
+                              builder: (context) => const OnboardingTwoScreen(),
                             ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0082CD), // Vibrant blue matching the screenshot
+                          backgroundColor: const Color(0xFF0082CD), // Vibrant blue
                           foregroundColor: Colors.white,
                           elevation: 0, // Flat design
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(buttonHeight * 0.4), // Perfectly rounded corners
+                            borderRadius: BorderRadius.circular(buttonHeight * 0.4), // rounded corners
                           ),
                         ),
                         child: const Text(
