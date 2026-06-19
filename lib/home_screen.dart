@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  // Track active tab index for the bottom navigation bar
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //  Top Margin for Logo (40px)
+            // Top Margin for Logo (40px)
             const SizedBox(height: 40),
 
             // Branded Logo
@@ -109,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const Text(
                     'Guide me',
                     style: TextStyle(
-                      fontSize: 32, // Large bold title label
+                      fontSize: 32, // Large bold label
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -117,57 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // space between nav bar and content
+            // space between content boundaries
             const Spacer(flex: 2),
           ],
         ),
-      ),
-
-      // Bottom Navigation Bar Layout
-      bottomNavigationBar: Container(
-        height: 75,
-        color: const Color(0xFF89C7E7), // Light blue
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(Icons.home_outlined, 'Home', 0),
-            _buildNavItem(Icons.person_outline, 'Profile', 1),
-            _buildNavItem(Icons.public, 'Countries', 2),
-            _buildNavItem(Icons.info_outline, 'AboutUs', 3),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Custom Navigation Item Builder
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    final bool isActive = _currentIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 28,
-            color: isActive ? const Color(0xFF1E5D88) : Colors.black87, // Highlighting selection state
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: isActive ? FontWeight.w900 : FontWeight.bold,
-              color: isActive ? const Color(0xFF1E5D88) : Colors.black87,
-            ),
-          ),
-        ],
       ),
     );
   }
