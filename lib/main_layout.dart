@@ -14,26 +14,34 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
+  // Global keys to keep track of each tab's independent navigation state
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(), // Home Navigation Key
+    GlobalKey<NavigatorState>(), // Countries Navigation Key
+    GlobalKey<NavigatorState>(), // AboutUs Navigation Key
+    GlobalKey<NavigatorState>(), // Profile Navigation Key
+  ];
+
   @override
   Widget build(BuildContext context) {
-    // Generate screens array dynamically inside build to pass the function cleanly
-    final List<Widget> screens = [
-      HomeScreen(
-        onGuideMeTapped: () {
-          setState(() {
-            _currentIndex = 1; // Switches tab index to Countries (1) reactively!
-          });
-        },
-      ),
-      const CountriesScreen(),
-      const AboutUsScreen(),
-      const ProfileScreen(),
-    ];
-
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: screens, // Inject the updated screen array containing our callback logic
+      // WillPopScope ensures that the Android system back button pops the internal
+      // tab history instead of closing the entire application abruptly.
+      body: WillPopScope(
+        onWillPop: () async {
+          final isFirstRouteInCurrentTab =
+          !await _navigatorKeys[_currentIndex].currentState!.maybePop();
+          return isFirstRouteInCurrentTab;
+        },
+        child: IndexedStack(
+          index: _currentIndex,
+          children: [
+            _buildTabNavigator(0, HomeScreen(onGuideMeTapped: () => setState(() => _currentIndex = 1))),
+            _buildTabNavigator(1, const CountriesScreen()),
+            _buildTabNavigator(2, const AboutUsScreen()),
+            _buildTabNavigator(3, const ProfileScreen()),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         height: 75,
@@ -51,25 +59,38 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
+  // wraps every primary tab view inside its own nested Navigator
+  Widget _buildTabNavigator(int index, Widget rootPage) {
+    return Navigator(
+      key: _navigatorKeys[index],
+      onGenerateRoute: (routeSettings) {
+        return MaterialPageRoute(
+          builder: (context) => rootPage,
+        );
+      },
+    );
+  }
+
   Widget _buildNavItem(IconData icon, String label, int index) {
     final bool isActive = _currentIndex == index;
     final Color activeColor = const Color(0xFF1E5D88);
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
+        if (_currentIndex == index) {
+          // If the user taps the already active tab icon, pop it all the way back to its root
+          _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+        } else {
+          setState(() {
+            _currentIndex = index;
+          });
+        }
       },
       behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 28,
-            color: isActive ? activeColor : Colors.black87,
-          ),
+          Icon(icon, size: 28, color: isActive ? activeColor : Colors.black87),
           const SizedBox(height: 4),
           Text(
             label,
