@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  // structural VoidCallback parameter
+  final VoidCallback onGuideMeTapped;
+
+  const HomeScreen({
+    super.key,
+    required this.onGuideMeTapped, // required
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,6 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Top Margin for Logo (40px)
             const SizedBox(height: 40),
 
             // Branded Logo
@@ -42,7 +47,6 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            // Act like a spring to balance spacing
             const Spacer(),
 
             // Banner Image
@@ -87,11 +91,9 @@ class HomeScreen extends StatelessWidget {
                 width: screenWidth * 0.65,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // next country window
-                  },
+                  onPressed: onGuideMeTapped, // Trigger the callback context
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E5D88), // Deep slate blue
+                    backgroundColor: const Color(0xFF1E5D88),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -101,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                   child: const Text(
                     'Guide me',
                     style: TextStyle(
-                      fontSize: 32, // Large bold label
+                      fontSize: 32,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -109,7 +111,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // space between content boundaries
             const Spacer(flex: 2),
           ],
         ),

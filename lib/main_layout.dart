@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-// import 'screens/profile_screen.dart';
-// import 'screens/countries_screen.dart';
-// import 'screens/about_us_screen.dart';
+import 'countries_screen.dart';
+import 'about_us_screen.dart';
+import 'profile_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -14,27 +14,30 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
-  // Array stack holding active internal pages
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const Center(child: Text('Countries Screen', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
-    const Center(child: Text('About Us Screen', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
-    const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Generate screens array dynamically inside build to pass the function cleanly
+    final List<Widget> screens = [
+      HomeScreen(
+        onGuideMeTapped: () {
+          setState(() {
+            _currentIndex = 1; // Switches tab index to Countries (1) reactively!
+          });
+        },
+      ),
+      const CountriesScreen(),
+      const AboutUsScreen(),
+      const ProfileScreen(),
+    ];
+
     return Scaffold(
-      // IndexedStack preserves the scroll position and state of each tab cleanly
       body: IndexedStack(
         index: _currentIndex,
-        children: _screens,
+        children: screens, // Inject the updated screen array containing our callback logic
       ),
-
-      // Bottom Navigation
       bottomNavigationBar: Container(
         height: 75,
-        color: const Color(0xFF89C7E7), // Light blue
+        color: const Color(0xFF89C7E7),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -48,15 +51,14 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  // Custom Navigation Item Builder
   Widget _buildNavItem(IconData icon, String label, int index) {
     final bool isActive = _currentIndex == index;
-    final Color activeColor = const Color(0xFF1E5D88); // Deep slate blue
+    final Color activeColor = const Color(0xFF1E5D88);
 
     return GestureDetector(
       onTap: () {
         setState(() {
-          _currentIndex = index; // Updates stack viewing position pipeline
+          _currentIndex = index;
         });
       },
       behavior: HitTestBehavior.opaque,
