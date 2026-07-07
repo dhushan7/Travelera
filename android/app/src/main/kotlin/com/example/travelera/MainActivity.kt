@@ -1,5 +1,7 @@
 package com.example.travelera
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+class MainActivity: FlutterFragmentActivity() {
+    // This allows the Stripe SDK to cleanly hook into Android's UI fragment layer
+}
