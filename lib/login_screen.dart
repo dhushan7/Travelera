@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'signup_screen.dart';
-import 'home_screen.dart';
-import 'package:travelera/main_layout.dart';
+import 'main_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,10 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Controllers to capture user input data
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false; // Manage loading state when backend communication is busy
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -24,12 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // Firebase login validation handling function
   Future<void> _handleLogin() async {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
 
-    // client-side validation
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in both email and password")),
@@ -38,17 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     setState(() {
-      _isLoading = true; // Show loading spinner feedback
+      _isLoading = true;
     });
 
     try {
-      // Request authentication authorization verification from Firebase
+      // Firebase automatically stores the session token on the device securely upon success
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Success navigation redirect
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -58,7 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
-      // Catch error triggers like 'wrong-password' or 'user-not-found' cleanly
       String errorMessage = "Authentication failed. Please check your credentials.";
 
       if (e.code == 'user-not-found') {
@@ -77,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       if (mounted) {
         setState(() {
-          _isLoading = false; // Turn off loading spinner
+          _isLoading = false;
         });
       }
     }
@@ -88,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    // Responsive element calculations
     final double loginCardWidth = screenWidth * 0.86;
     final double inputFieldHeight = 55.0;
     final double logoSize = screenWidth * 0.32;
@@ -98,21 +91,15 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Background
           Positioned.fill(
             child: Image.asset(
               'assets/images/login-bg.png',
               fit: BoxFit.cover,
             ),
           ),
-
-
-
-          // Foreground Content
           SafeArea(
             child: Stack(
               children: [
-                // Login Form
                 Center(
                   child: Container(
                     width: loginCardWidth,
@@ -126,33 +113,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizedBox(height: 30),
-
-                        // Email Input
                         _buildInputField(
                           controller: _emailController,
                           hintText: 'email:',
                           keyboardType: TextInputType.emailAddress,
                           height: inputFieldHeight * 0.8,
                         ),
-
                         const SizedBox(height: 20),
-
-                        // Password Input
                         _buildInputField(
                           controller: _passwordController,
                           hintText: 'Password:',
                           obscureText: true,
                           height: inputFieldHeight * 0.8,
                         ),
-
                         const SizedBox(height: 35),
-
-                        // Login Action Button Connected to Database Method
                         SizedBox(
                           width: buttonWidth,
                           height: 52,
                           child: ElevatedButton(
-                            onPressed: _isLoading ? null : _handleLogin, // Disable click actions while loading
+                            onPressed: _isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF0082CD),
                               foregroundColor: Colors.white,
@@ -180,10 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 15),
-
-                        // Registration Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -217,8 +193,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
-                // Logo Layer
                 Positioned(
                   left: 0,
                   right: 0,
@@ -249,7 +223,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Component Helper, shadowed text fields
   Widget _buildInputField({
     required TextEditingController controller,
     required String hintText,

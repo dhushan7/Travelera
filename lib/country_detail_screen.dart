@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'destination_grid_screen.dart';
 
 class CountryDetailScreen extends StatelessWidget {
   final String title;
   final String description;
   final String imagePath;
   final Color titleColor;
+  final List<Map<String, String>> destinations;
 
   const CountryDetailScreen({
     super.key,
     required this.title,
     required this.description,
     required this.imagePath,
+    required this.destinations,
     this.titleColor = const Color(0xFF1E3F00), // Fallback forest green
   });
 
@@ -116,7 +119,15 @@ class CountryDetailScreen extends StatelessWidget {
                   height: 52,
                   child: ElevatedButton(
                     onPressed: () {
-                      //  routing logics
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DestinationGridScreen(
+                            countryName: title,
+                            destinations: destinations,
+                          ),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF235E8E),

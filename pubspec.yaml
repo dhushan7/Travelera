@@ -31,9 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: ^3.0.0
-  firebase_auth: ^5.0.0
-  cloud_firestore: ^5.0.0
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  cloud_firestore: ^6.6.0
+
+  shared_preferences: ^2.3.5
+  flutter_stripe: ^13.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -81,6 +84,29 @@ flutter:
     - assets/images/japan_bg.png
     - assets/images/japan_fg.png
     - assets/images/aboutus-bg.png
+    - assets/images/colombo.png
+    - assets/images/hikkaduwa.png
+    - assets/images/galle.png
+    - assets/images/mirissa.png
+    - assets/images/yala.png
+    - assets/images/badulla.png
+    - assets/images/anuradhapura.png
+    - assets/images/polonnaruwa.png
+    - assets/images/jaffna.png
+    - assets/images/arugambay.png
+    - assets/images/desert_safari.png
+    - assets/images/museum_future.png
+    - assets/images/palm_jumeirah.png
+    - assets/images/dubai_creek.png
+    - assets/images/miracle_garden.png
+    - assets/images/dubai_frame.png
+    - assets/images/burj_khalifa.png
+    - assets/images/dubai_eye.png
+    - assets/images/couple_bg.png
+    - assets/images/family_bg.png
+    - assets/images/family_plus_bg.png
+    - assets/images/group_bg.png
+    - assets/images/enhanced_group_bg.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

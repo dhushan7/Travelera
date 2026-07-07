@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
+import 'services/app_preferences.dart';
 
 class OnboardingThreeScreen extends StatelessWidget {
   const OnboardingThreeScreen({super.key});
@@ -69,13 +70,17 @@ class OnboardingThreeScreen extends StatelessWidget {
                       width: buttonWidth,
                       height: buttonHeight,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                        onPressed: () async {
+                          await AppPreferences.completeOnboarding();
+
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const LoginScreen(),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF0082CD),

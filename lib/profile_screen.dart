@@ -6,54 +6,77 @@ import 'login_screen.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  // handle user logouts
   Future<void> _handleLogout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    if (context.mounted) {
-      Navigator.of(context, rootNavigator: true).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    }
+
+    if (!context.mounted) return;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(),
+      ),
+          (route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-
-    // Get the current logged-in user's UID
     final User? currentUser = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      // If user session is null, immediately stop and show an unauthorized message
       body: currentUser == null
           ? const Center(child: Text('No active user found.'))
           : SafeArea(
-        child: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
+        child: StreamBuilder<DocumentSnapshot>(
+          // Switched to snapshots() stream for real-time updates
+          stream: FirebaseFirestore.instance
               .collection('users')
               .doc(currentUser.uid)
-              .get(),
+              .snapshots(),
           builder: (context, snapshot) {
-            // Loading state
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(color: Color(0xFF1E5D88)),
               );
             }
 
-            // Error fallback UI handling
-            if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
-              return const Center(
-                child: Text(
-                  'Failed to load profile details.',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              );
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
             }
 
-            // Extract payload data mapping fields saved during SignUp
+            // Debugging Block
+            if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
+              if (snapshot.hasError) {
+                print("🔥 FIRESTORE ERROR: ${snapshot.error}");
+              }
+              if (snapshot.hasData && !snapshot.data!.exists) {
+                print("📂 DOCUMENT DOES NOT EXIST: Looked for collection 'users' with document ID: ${FirebaseAuth.instance.currentUser?.uid}");
+              }
+
+              return const Center(
+                child: Text('Failed to load profile details.', style: TextStyle(fontWeight: FontWeight.bold)),
+              );
+            }
+            // Enhanced debugging logic to print explicitly to your console log
+            if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
+              if (snapshot.hasError) {
+                debugPrint("Firestore Error: ${snapshot.error}");
+              } else if (snapshot.hasData && !snapshot.data!.exists) {
+                debugPrint("Firestore Error: Document targeting UID '${currentUser.uid}' does not exist in collection 'users'.");
+              }
+
+              // return const Center(
+              //   child: Text(
+              //     'Failed to load profile details.',
+              //     style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // );
+            }
+
             final Map<String, dynamic> userData =
             snapshot.data!.data() as Map<String, dynamic>;
 
@@ -65,8 +88,6 @@ class ProfileScreen extends StatelessWidget {
             return Column(
               children: [
                 SizedBox(height: screenHeight * 0.12),
-
-                // Center Profile Card
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                   child: Container(
@@ -79,7 +100,6 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Avatar Image
                         Stack(
                           alignment: Alignment.bottomRight,
                           children: [
@@ -110,10 +130,7 @@ class ProfileScreen extends StatelessWidget {
                             )
                           ],
                         ),
-
                         const SizedBox(height: 32),
-
-                        // User Details fetched directly from Firestore
                         _buildProfileDetail('Name: $fullName'),
                         const SizedBox(height: 16),
                         _buildProfileDetail('Country: $country'),
@@ -121,10 +138,7 @@ class ProfileScreen extends StatelessWidget {
                         _buildProfileDetail('Contact: $contactNo'),
                         const SizedBox(height: 16),
                         _buildProfileDetail('Email: $email'),
-
                         const SizedBox(height: 36),
-
-                        // Logout Button Instance
                         SizedBox(
                           width: screenWidth * 0.52,
                           height: 48,
@@ -152,10 +166,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const Spacer(),
-
-                // Logo
                 Center(
                   child: Image.asset(
                     'assets/images/logo.png',
@@ -163,7 +174,6 @@ class ProfileScreen extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-
                 SizedBox(height: screenHeight * 0.07),
               ],
             );
@@ -173,7 +183,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Profile Text Typography Helper Component
   Widget _buildProfileDetail(String text) {
     return Text(
       text,
