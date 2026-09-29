@@ -124,6 +124,7 @@ class CountryDetailScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => DestinationGridScreen(
                             countryName: title,
+                            titleColor: titleColor,
                             destinations: destinations,
                           ),
                         ),

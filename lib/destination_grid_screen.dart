@@ -3,11 +3,13 @@ import 'package_screen.dart';
 
 class DestinationGridScreen extends StatelessWidget {
   final String countryName;
+  final Color titleColor;
   final List<Map<String, String>> destinations;
 
   const DestinationGridScreen({
     super.key,
     required this.countryName,
+    required this.titleColor,
     required this.destinations,
   });
 
@@ -55,10 +57,10 @@ class DestinationGridScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
                 countryName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 38,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF2C4D2E), // Custom header
+                  color: titleColor, // Custom header
                 ),
               ),
             ),

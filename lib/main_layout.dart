@@ -3,6 +3,7 @@ import 'home_screen.dart';
 import 'countries_screen.dart';
 import 'about_us_screen.dart';
 import 'profile_screen.dart';
+import 'my_bookings_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -14,53 +15,97 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
-  // Global keys to keep track of each tab's independent navigation state
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
-    GlobalKey<NavigatorState>(), // Home Navigation Key
-    GlobalKey<NavigatorState>(), // Countries Navigation Key
-    GlobalKey<NavigatorState>(), // AboutUs Navigation Key
-    GlobalKey<NavigatorState>(), // Profile Navigation Key
+    GlobalKey<NavigatorState>(), // Home
+    GlobalKey<NavigatorState>(), // Countries
+    GlobalKey<NavigatorState>(), // My Bookings
+    GlobalKey<NavigatorState>(), // Profile
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // WillPopScope ensures that the Android system back button pops the internal
-      // tab history instead of closing the entire application abruptly.
       body: WillPopScope(
         onWillPop: () async {
-          final isFirstRouteInCurrentTab =
-          !await _navigatorKeys[_currentIndex].currentState!.maybePop();
-          return isFirstRouteInCurrentTab;
+          final navigator = _navigatorKeys[_currentIndex].currentState;
+
+          if (navigator != null && await navigator.maybePop()) {
+            return false;
+          }
+
+          return true;
         },
         child: IndexedStack(
           index: _currentIndex,
           children: [
-            _buildTabNavigator(0, HomeScreen(onGuideMeTapped: () => setState(() => _currentIndex = 1))),
-            _buildTabNavigator(1, const CountriesScreen()),
-            _buildTabNavigator(2, const AboutUsScreen()),
-            _buildTabNavigator(3, const ProfileScreen()),
+            _buildTabNavigator(
+              0,
+              HomeScreen(
+                onGuideMeTapped: () {
+                  setState(() {
+                    _currentIndex = 1;
+                  });
+                },
+              ),
+            ),
+
+            _buildTabNavigator(
+              1,
+              const CountriesScreen(),
+            ),
+
+            _buildTabNavigator(
+              2,
+              const MyBookingsScreen(),
+            ),
+
+            _buildTabNavigator(
+              3,
+              const ProfileScreen(),
+            ),
           ],
         ),
       ),
+
       bottomNavigationBar: Container(
         height: 75,
         color: const Color(0xFF89C7E7),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Icons.home_outlined, 'Home', 0),
-            _buildNavItem(Icons.public, 'Countries', 1),
-            _buildNavItem(Icons.info_outline, 'AboutUs', 2),
-            _buildNavItem(Icons.person_outline, 'Profile', 3),
+            _buildNavItem(
+              Icons.home_outlined,
+              'Home',
+              0,
+            ),
+
+            _buildNavItem(
+              Icons.public,
+              'Countries',
+              1,
+            ),
+
+            _buildNavItem(
+              Icons.book_online_outlined,
+              'My Bookings',
+              2,
+            ),
+
+            _buildNavItem(
+              Icons.person_outline,
+              'Profile',
+              3,
+            ),
           ],
         ),
       ),
     );
   }
 
-  // wraps every primary tab view inside its own nested Navigator
-  Widget _buildTabNavigator(int index, Widget rootPage) {
+  Widget _buildTabNavigator(
+      int index,
+      Widget rootPage,
+      ) {
     return Navigator(
       key: _navigatorKeys[index],
       onGenerateRoute: (routeSettings) {
@@ -71,15 +116,23 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(
+      IconData icon,
+      String label,
+      int index,
+      ) {
     final bool isActive = _currentIndex == index;
-    final Color activeColor = const Color(0xFF1E5D88);
+
+    const Color activeColor = Color(0xFF1E5D88);
 
     return GestureDetector(
       onTap: () {
         if (_currentIndex == index) {
-          // If the user taps the already active tab icon, pop it all the way back to its root
-          _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+          _navigatorKeys[index]
+              .currentState
+              ?.popUntil(
+                (route) => route.isFirst,
+          );
         } else {
           setState(() {
             _currentIndex = index;
@@ -90,14 +143,26 @@ class _MainLayoutState extends State<MainLayout> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 28, color: isActive ? activeColor : Colors.black87),
+          Icon(
+            icon,
+            size: 28,
+            color: isActive
+                ? activeColor
+                : Colors.black87,
+          ),
+
           const SizedBox(height: 4),
+
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
-              fontWeight: isActive ? FontWeight.w900 : FontWeight.bold,
-              color: isActive ? activeColor : Colors.black87,
+              fontSize: 11,
+              fontWeight: isActive
+                  ? FontWeight.w900
+                  : FontWeight.bold,
+              color: isActive
+                  ? activeColor
+                  : Colors.black87,
             ),
           ),
         ],

@@ -2,17 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login_screen.dart';
+import 'about_us_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  // Future<void> _handleLogout(BuildContext context) async {
+  //   await FirebaseAuth.instance.signOut();
+  //
+  //   if (!context.mounted) return;
+  //
+  //   Navigator.pushAndRemoveUntil(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (_) => const LoginScreen(),
+  //     ),
+  //         (route) => false,
+  //   );
+  // }
+
+  // Future<void> _handleLogout() async {
+  //   await FirebaseAuth.instance.signOut();
+  // }
 
   Future<void> _handleLogout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
 
     if (!context.mounted) return;
 
-    Navigator.pushAndRemoveUntil(
-      context,
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const LoginScreen(),
       ),
@@ -138,7 +156,13 @@ class ProfileScreen extends StatelessWidget {
                         _buildProfileDetail('Contact: $contactNo'),
                         const SizedBox(height: 16),
                         _buildProfileDetail('Email: $email'),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 28),
+
+
+
+                        const SizedBox(height: 16),
+
+                        // Logout
                         SizedBox(
                           width: screenWidth * 0.52,
                           height: 48,
@@ -155,7 +179,7 @@ class ProfileScreen extends StatelessWidget {
                             child: const Text(
                               'Logout',
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 0.5,
                               ),
@@ -174,6 +198,28 @@ class ProfileScreen extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
+
+                // About Us
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AboutUsScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'About Us',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+
                 SizedBox(height: screenHeight * 0.07),
               ],
             );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Added Firebase Auth to fetch the logged-in user
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookingPaymentScreen extends StatefulWidget {
   final String requirementTitle;
@@ -54,27 +55,36 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
   }
 
   Future<void> _processPayment() async {
-    if (_cardNumberController.text.isEmpty || _expDateController.text.isEmpty || _cvnController.text.isEmpty) {
+    if (_cardNumberController.text.isEmpty ||
+        _expDateController.text.isEmpty ||
+        _cvnController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please complete all payment fields')),
+        const SnackBar(
+          content: Text('Please complete all payment fields'),
+        ),
       );
       return;
     }
 
     final expParts = _expDateController.text.split('/');
+
     if (expParts.length != 2) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid Expiration Date format (Use MM/YY)')),
+        const SnackBar(
+          content: Text('Invalid Expiration Date format (Use MM/YY)'),
+        ),
       );
       return;
     }
 
-    int? expMonth = int.tryParse(expParts[0]);
-    int? expYear = int.tryParse(expParts[1]);
+    final int? expMonth = int.tryParse(expParts[0]);
+    final int? expYear = int.tryParse(expParts[1]);
 
     if (expMonth == null || expYear == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid expiration numbers')),
+        const SnackBar(
+          content: Text('Invalid expiration numbers'),
+        ),
       );
       return;
     }
@@ -82,8 +92,6 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      // Stripe's Internal Card State
-      // This solves the "Card details not complete" error.
       await Stripe.instance.dangerouslyUpdateCardDetails(
         CardDetails(
           number: _cardNumberController.text.replaceAll(' ', ''),
@@ -93,30 +101,103 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
         ),
       );
 
-      // The Payment Method securely using those assigned values
       final paymentMethod = await Stripe.instance.createPaymentMethod(
         params: const PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(),
         ),
       );
 
-      String paymentMethodId = paymentMethod.id;
-      debugPrint('Secure Payment Token created: $paymentMethodId');
+      final String paymentMethodId = paymentMethod.id;
+
+      debugPrint(
+        'Secure Payment Method created: $paymentMethodId',
+      );
+
+      // Save booking
+      await _saveBookingToFirebase(paymentMethodId);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Token Created Successfully! Processing backend request...')),
+          const SnackBar(
+            content: Text(
+              'Booking submitted successfully. Waiting for admin approval.',
+            ),
+          ),
         );
+
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Stripe Error: ${e.toString()}')),
+          SnackBar(
+            content: Text('Payment Error: ${e.toString()}'),
+          ),
         );
       }
     } finally {
-      if (mounted) setState(() => _isProcessing = false);
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
     }
+  }
+
+  Future<void> _saveBookingToFirebase(String paymentMethodId) async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      throw Exception('No logged-in user found.');
+    }
+
+    // User's UID is used to keep bookings separated by user.
+    final String uid = user.uid;
+
+    // Get the user's email from Firebase Authentication.
+    final String email = user.email ?? _emailController.text.trim();
+
+    if (email.isEmpty) {
+      throw Exception('User email not found.');
+    }
+
+    // Create a new booking document.
+    final DocumentReference bookingRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('bookings')
+        .doc();
+
+    await bookingRef.set({
+      'bookingId': bookingRef.id,
+
+      // User information
+      'userId': uid,
+      'email': email,
+
+      // Booking information
+      'requirementTitle': widget.requirementTitle,
+      'imagePath': widget.imagePath,
+      'fullName': _nameController.text.trim(),
+      'contactNo': _contactController.text.trim(),
+
+      // Payment information
+      'paymentAmount': 250,
+      'currency': 'USD',
+      'paymentMethodId': paymentMethodId,
+
+      // Admin approval status
+      'status': 'pending',
+
+      // Admin can add a message later
+      'adminNote': '',
+
+      // Dates
+      'createdAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+
+    debugPrint(
+      'Booking saved successfully for user: $email',
+    );
   }
 
   @override

@@ -107,6 +107,30 @@ flutter:
     - assets/images/family_plus_bg.png
     - assets/images/group_bg.png
     - assets/images/enhanced_group_bg.png
+    - assets/images/gardens_by_the_bay.png
+    - assets/images/marina_bay_sands.png
+    - assets/images/sentosa_island.png
+    - assets/images/singapore_flyer.png
+    - assets/images/merlion_park.png
+    - assets/images/universal_studios.png
+    - assets/images/singapore_zoo.png
+    - assets/images/chinatown.png
+    - assets/images/petronas_twin_towers.png
+    - assets/images/langkawi.png
+    - assets/images/batu_caves.png
+    - assets/images/cameron_highlands.png
+    - assets/images/george_town.png
+    - assets/images/mount_kinabalu.png
+    - assets/images/perhentian_islands.png
+    - assets/images/kuala_lumpur_tower.png
+    - assets/images/mount_fuji.png
+    - assets/images/tokyo.png
+    - assets/images/kyoto.png
+    - assets/images/arashiyama_bamboo.png
+    - assets/images/fushimi_inari.png
+    - assets/images/osaka_castle.png
+    - assets/images/hiroshima_peace_memorial.png
+    - assets/images/nara_park.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

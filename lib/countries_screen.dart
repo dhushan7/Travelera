@@ -15,7 +15,7 @@ class CountriesScreen extends StatelessWidget {
         'name': 'Sri Lanka',
         'bgImage': 'assets/images/srilanka_bg.png',
         'fgImage': 'assets/images/srilanka_fg.png',
-        'titleColor': const Color(0xFF1E3F00), // Deep Forest Green
+        'titleColor': const Color(0xFF509701), // Deep Forest Green
         'description': 'Sri Lanka, or “The Pearl of the Indian Ocean” is an exquisite island country full of breathtaking landscapes, historical treasures, and genuine hospitality. It sits just south of India and is a treasure trove of ancient temples, an array of wildlife, and garlanded beaches and mountains, all within a few hours of travel.\n\nTourists can enjoy the waves in Arugam Bay, visit ancient ruins in Anuradhapura, walk through the tea-laden hills in Ella, or watch elephants in Yala National Park.\n\nWith a blend of culture, Sri Lanka is an exceptional and complete travel destination that guarantees remarkable memories.',
         'destinations': [
           {'name': 'Colombo', 'image': 'assets/images/colombo.png'},
@@ -52,21 +52,51 @@ class CountriesScreen extends StatelessWidget {
         'bgImage': 'assets/images/singapore_bg.png',
         'fgImage': 'assets/images/singapore_fg.png',
         'titleColor': const Color(0xFF1C2D37), // Slate Modern Blue/Charcoal
-        'description': 'Singapore is a global hub where nature perfectly intertwines with futuristic innovation. Known as a "City in a Garden," this vibrant island nation boasts iconic supertrees at Gardens by the Bay, the striking Marina Bay Sands architecture, and world-class retail spaces.\n\nDelve into a rich cultural melting pot across vibrant neighborhoods like Chinatown and Little India, and enjoy an unforgettable street food scene. Singapore delivers a seamless, safe, and truly cutting-edge travel experience.'
+        'description': 'Singapore is a global hub where nature perfectly intertwines with futuristic innovation. Known as a "City in a Garden," this vibrant island nation boasts iconic supertrees at Gardens by the Bay, the striking Marina Bay Sands architecture, and world-class retail spaces.\n\nDelve into a rich cultural melting pot across vibrant neighborhoods like Chinatown and Little India, and enjoy an unforgettable street food scene. Singapore delivers a seamless, safe, and truly cutting-edge travel experience.',
+        'destinations': [
+          {'name': 'Gardens by the Bay','image': 'assets/images/gardens_by_the_bay.png'},
+          {'name': 'Marina Bay Sands','image': 'assets/images/marina_bay_sands.png'},
+          {'name': 'Sentosa Island','image': 'assets/images/sentosa_island.png'},
+          {'name': 'Singapore Flyer','image': 'assets/images/singapore_flyer.png'},
+          {'name': 'Merlion Park','image': 'assets/images/merlion_park.png'},
+          {'name': 'Universal Studios Singapore','image': 'assets/images/universal_studios.png'},
+          {'name': 'Singapore Zoo', 'image': 'assets/images/singapore_zoo.png'},
+          {'name': 'Chinatown', 'image': 'assets/images/chinatown.png'},
+        ],
       },
       {
         'name': 'Malaysia',
         'bgImage': 'assets/images/malaysia_bg.png',
         'fgImage': 'assets/images/malaysia_fg.png',
         'titleColor': const Color(0xFF0D47A1), // Deep Ocean Blue/Teal
-        'description': 'Malaysia offers a beautiful contrast of bustling modern metropolises, historic colonial towns, and some of the world’s oldest rainforests. From the iconic Petronas Twin Towers in Kuala Lumpur to the cultural streets of Penang and the serene tea plantations of the Cameron Highlands, diversity defines this land.\n\nRelax on the pristine beaches of Langkawi or dive into local traditions. Truly Asia, Malaysia welcomes you with vibrant cultures, exceptional cuisine, and beautiful scenery.'
+        'description': 'Malaysia offers a beautiful contrast of bustling modern metropolises, historic colonial towns, and some of the world’s oldest rainforests. From the iconic Petronas Twin Towers in Kuala Lumpur to the cultural streets of Penang and the serene tea plantations of the Cameron Highlands, diversity defines this land.\n\nRelax on the pristine beaches of Langkawi or dive into local traditions. Truly Asia, Malaysia welcomes you with vibrant cultures, exceptional cuisine, and beautiful scenery.',
+        'destinations': [
+          {'name': 'Petronas Twin Towers', 'image': 'assets/images/petronas_twin_towers.png'},
+          {'name': 'Langkawi', 'image': 'assets/images/langkawi.png'},
+          {'name': 'Batu Caves', 'image': 'assets/images/batu_caves.png'},
+          {'name': 'Cameron Highlands', 'image': 'assets/images/cameron_highlands.png'},
+          {'name': 'George Town', 'image': 'assets/images/george_town.png'},
+          {'name': 'Mount Kinabalu', 'image': 'assets/images/mount_kinabalu.png'},
+          {'name': 'Perhentian Islands', 'image': 'assets/images/perhentian_islands.png'},
+          {'name': 'Kuala Lumpur Tower', 'image': 'assets/images/kuala_lumpur_tower.png'},
+        ],
       },
       {
         'name': 'Japan',
         'bgImage': 'assets/images/japan_bg.png',
         'fgImage': 'assets/images/japan_fg.png',
         'titleColor': const Color(0xFF9E1B1B), // Iconic Crimson/Crimson Red
-        'description': 'Japan is a mesmerizing destination where thousands of years of ancient tradition meet ultra-modern, neon-lit cities. It is a country of breathtaking seasonal transitions—from the soft pink cherry blossoms of spring to the snow-capped peak of Mount Fuji.\n\nJourney from the historic temples and serene bamboo groves of Kyoto to the high-tech, fast-paced streets of Tokyo. With its unmatched hospitality, precise engineering, and world-renowned culinary arts, Japan promises an immersive escape.'
+        'description': 'Japan is a mesmerizing destination where thousands of years of ancient tradition meet ultra-modern, neon-lit cities. It is a country of breathtaking seasonal transitions—from the soft pink cherry blossoms of spring to the snow-capped peak of Mount Fuji.\n\nJourney from the historic temples and serene bamboo groves of Kyoto to the high-tech, fast-paced streets of Tokyo. With its unmatched hospitality, precise engineering, and world-renowned culinary arts, Japan promises an immersive escape.',
+        'destinations': [
+          {'name': 'Mount Fuji', 'image': 'assets/images/mount_fuji.png'},
+          {'name': 'Tokyo', 'image': 'assets/images/tokyo.png'},
+          {'name': 'Kyoto', 'image': 'assets/images/kyoto.png'},
+          {'name': 'Arashiyama Bamboo Grove', 'image': 'assets/images/arashiyama_bamboo.png'},
+          {'name': 'Fushimi Inari Shrine', 'image': 'assets/images/fushimi_inari.png'},
+          {'name': 'Osaka Castle', 'image': 'assets/images/osaka_castle.png'},
+          {'name': 'Hiroshima Peace Memorial', 'image': 'assets/images/hiroshima_peace_memorial.png'},
+          {'name': 'Nara Park', 'image': 'assets/images/nara_park.png'},
+        ],
       },
     ];
 

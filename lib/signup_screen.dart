@@ -42,6 +42,20 @@ class _SignupScreenState extends State<SignupScreen> {
     final String password = _passwordController.text.trim();
     final String confirmPassword = _confirmPasswordController.text.trim(); // Captured confirm password value
 
+    await FirebaseAuth.instance.signOut();
+
+    if (!mounted) return;
+
+    FocusScope.of(context).unfocus();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(),
+      ),
+          (route) => false,
+    );
+
     // Check for empty fields
     if (fullName.isEmpty || email.isEmpty || contactNo.isEmpty || country.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       _showSnackBar("Please fill out all fields.");
@@ -144,7 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final double logoSize = screenWidth * 0.32;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           // Background
@@ -155,7 +169,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
 
-          const SizedBox(height: 100),
+          // const SizedBox(height: 100),
 
           // Content Layer
           SafeArea(
@@ -336,22 +350,19 @@ class _SignupScreenState extends State<SignupScreen> {
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: screenHeight * 0.05,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: logoSize * 1.2,
-                        height: logoSize * 1.2,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(logoSize * 0.22),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/logo.png'),
-                            fit: BoxFit.contain,
-                          ),
+                  bottom: 20,
+                  child: Center(
+                    child: Container(
+                      width: logoSize,
+                      height: logoSize,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(logoSize * 0.22),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/logo.png'),
+                          fit: BoxFit.contain,
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
